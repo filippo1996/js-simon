@@ -1,0 +1,46 @@
+/* common */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background: url(../img/tavolo.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.hidden{
+    display: none;
+}
+
+main{
+    min-width: 500px;
+    width: 50%;
+    margin: 50px auto;
+}
+
+.card{
+    width: 125px;
+    cursor: pointer;
+}
+
+#timer{
+    font-size: 3rem;
+    color: white;
+}
+
+.box{
+    border: 2px solid white;
+    border-radius: 10px;
+    font-size: 3rem;
+    color: white;
+    padding: 20px;
+}
+
+#start{
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
