@@ -1,15 +1,20 @@
 //Variabile che imposta il livello di gioco
-var level = 1;
+var level;
 //Larghezza e altezza della griglia di gioco
-var [width, height] = [4,3];
+var width, height;
+
+//Richiesta livello di gioco all'utente
+while(isNaN(level)){
+    level = parseInt(prompt('Inserisci il livello di gioco da 1 a 2'));
+}
 
 //In base al livello impostiamo le misure della griglia
 switch(level){
+    case 1:
+        [width, height] = [4,3];
+        break;
     case 2:
         [width, height] = [6,6];
-        break;
-    case 3:
-        [width, height] = [8,8];
         break;   
 }
 
