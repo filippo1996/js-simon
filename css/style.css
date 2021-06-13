@@ -8,7 +8,6 @@
 body{
     background: url(../img/tavolo.jpg);
     background-size: cover;
-    background-repeat: no-repeat;
 }
 
 .hidden{
@@ -22,7 +21,7 @@ main{
 }
 
 .card{
-    width: 125px;
+    width: 85%;
     cursor: pointer;
 }
 
@@ -43,4 +42,5 @@ main{
     border: none;
     padding: 10px 20px;
     cursor: pointer;
+    background: white;
 }

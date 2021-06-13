@@ -36,6 +36,9 @@ var selectedCard;
 //Variabile che gestisce l'attesa del click
 var waiting = true;
 
+//Stabiliamo la vittoria
+var promiseWin;
+
 //Elementi cliccati delle carte (DOM) che vengono salvate nell'array
 var itemsCard = [];
 
@@ -74,7 +77,7 @@ function logicGame(id, ele, itemsDeck){
     }
 
     //Funzione che richiama l'avvio del timer
-    getTimer();
+    getTimer(timer).then(result => statusGame(false));
     
     //Verifichiamo se le due carte girate sono uguali
     if(secondCard && firstCard === secondCard){
@@ -88,14 +91,12 @@ function logicGame(id, ele, itemsDeck){
             waiting = true;
             //Eliminiamo le carte che sono state indovinate
             changeOrDeliteCard(itemsCard, true);
-
-            //Verifichiamo se l'utente ha vinto
-            if(!itemsDeck.length){
-                clearInterval(intervalTimer);
-                statusGame(true);
-            }
         },1000);
-        
+
+        //Verifichiamo se l'utente ha vinto
+        if(!itemsDeck.length){
+            promiseWin = Promise.resolve('win');
+        }
         
     }else if(secondCard && firstCard !== secondCard){
         //Eliminiamo il valore delle carte salvtate in precedenza dell'utente
@@ -112,9 +113,10 @@ function logicGame(id, ele, itemsDeck){
 
 /**
  * Funzione che elabora la schermata della vittoria o sconfitta
- * @param {Boolean} bool 
+ * @param {Boolean} bool
+ * @param {number} time 
  */
-function statusGame(bool){
+function statusGame(bool, time){
     //Mostriamo la sezione del risultato della partita
     document.getElementById('game').remove();
     document.getElementById('end-game').className = '';
@@ -124,7 +126,7 @@ function statusGame(bool){
 
     if(bool){
         eleMessage.innerHTML = "Congratulazioni, hai trovato tutte le carte!";
-        eleScore.innerHTML = "L'hai completato in " + (difficulty * 3 - timer) + ' secondi';
+        eleScore.innerHTML = "L'hai completato in " + (difficulty * 3 - time) + ' secondi';
     }else{
         eleMessage.innerHTML = "OPS, non sei riuscito a completarlo...";
         eleScore.innerHTML = "Tempo scaduto!";
@@ -137,19 +139,24 @@ function statusGame(bool){
 /**
  * Funzione che gestisce il tempo rimanente del gioco
  */
- function getTimer(){
-    if(!startTimer){
-        startTimer = true;
-        intervalTimer = setInterval(function(){
-            if(timer){
-                timer--;
-                document.getElementById('timer').innerHTML = `Tempo rimanente ${timer} secondi`;
-            }else{
-                clearInterval(intervalTimer);
-                statusGame(false);
-            }
-        },1000);
-    }
+ function getTimer(time){
+    return new Promise((resolve, reject) =>{
+        if(!startTimer){
+            startTimer = true;
+            var interval = setInterval(() =>{
+                time--;
+                document.getElementById('timer').innerHTML = `Tempo rimanente ${time} secondi`;
+                if(!time){
+                    //clearInterval(interval);
+                    resolve(clearInterval(interval));
+                }
+                promiseWin?.then(result => {
+                    clearInterval(interval);
+                    statusGame(true, time)
+                });
+            },1000);
+        }
+    });
 }
 
 
@@ -176,7 +183,6 @@ function changeOrDeliteCard(eleCard, bool, idCard){
         eleCard = [];
     }
 }
-
 
 /**
  * Funzione che elimina gli elementi trovati dall'array originale
