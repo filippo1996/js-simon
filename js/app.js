@@ -126,7 +126,7 @@ function statusGame(bool, time){
 
     if(bool){
         eleMessage.innerHTML = "Congratulazioni, hai trovato tutte le carte!";
-        eleScore.innerHTML = "L'hai completato in " + (difficulty * 3 - time) + ' secondi';
+        eleScore.innerHTML = "L'hai completato in " + (difficulty * 3 - time) + ' secondi, mancavano gli ultimi ' + time + ' secondi';
     }else{
         eleMessage.innerHTML = "OPS, non sei riuscito a completarlo...";
         eleScore.innerHTML = "Tempo scaduto!";
